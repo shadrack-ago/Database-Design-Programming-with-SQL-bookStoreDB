@@ -1,0 +1,112 @@
+// title
+title Bookstore Database Model
+
+// define tables
+book [icon: book, color: lightblue] {
+  id string pk
+  title string
+  publisher_id string
+  language_id string
+  DateOfPublish_id string
+}
+
+book_author [icon: users, color: orange] {
+  id string pk
+  book_id string
+  author_id string
+}
+
+author [icon: user, color: yellow] {
+  id string pk
+  name string
+}
+
+book_language [icon: globe, color: green] {
+  id string pk
+  language_name string
+}
+
+publisher [icon: building, color: purple] {
+  id string pk
+  name string
+}
+
+customer [icon: user, color: pink] {
+  id string pk
+  name string
+  email string
+}
+
+customer_address [icon: map-pin, color: brown] {
+  id string pk
+  customer_id string
+  address_id string
+  status_id string
+}
+
+address_status [icon: tag, color: gray] {
+  id string pk
+  status_name string
+}
+
+address [icon: map, color: teal] {
+  id string pk
+  street string
+  city string
+  postal_code string
+  country_id string
+}
+
+country [icon: flag, color: red] {
+  id string pk
+  country_name string
+}
+
+cust_order [icon: shopping-cart, color: blue] {
+  id string pk
+  customer_id string
+  order_date timestamp
+  status_id string
+  shipping_method_id string
+}
+
+order_line [icon: list, color: orange] {
+  id string pk
+  order_id string
+  book_id string
+  quantity int
+}
+
+shipping_method [icon: truck, color: green] {
+  id string pk
+  method_name string
+}
+
+order_history [icon: clock, color: gray] {
+  id string pk
+  order_id string
+  status_id string
+  change_date timestamp
+}
+
+order_status [icon: check-circle, color: yellow] {
+  id string pk
+  status_name string
+}
+
+// define relationships
+book.publisher_id > publisher.id
+book.language_id > book_language.id
+book_author.book_id > book.id
+book_author.author_id > author.id
+customer_address.customer_id > customer.id
+customer_address.address_id > address.id
+customer_address.status_id > address_status.id
+address.country_id > country.id
+cust_order.customer_id > customer.id
+cust_order.status_id > order_status.id
+cust_order.shipping_method_id > shipping_method.id
+order_line.order_id > cust_order.id
+order_line.book_id > book.id
+order_history.order_id > cust_order.id
+order_history.status_id > order_status.id

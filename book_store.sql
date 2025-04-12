@@ -102,7 +102,7 @@ CREATE TABLE customer_address (
 );
 
 
---table 11. shipping_method
+-- table 11. shipping_method
 
 CREATE TABLE shipping_method (
     id VARCHAR(36) PRIMARY KEY,

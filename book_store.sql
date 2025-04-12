@@ -106,7 +106,7 @@ CREATE TABLE customer_address (
 --table 11. shipping_method
 
 CREATE TABLE shipping_method (
-    id VARCHAR(36) PRIMARY KEY NOT NULL,
+    id VARCHAR(36) PRIMARY KEY,
     method_name VARCHAR(50) NOT NULL
 );
 

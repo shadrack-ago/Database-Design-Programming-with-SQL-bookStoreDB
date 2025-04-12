@@ -1,6 +1,45 @@
 CREATE DATABASE bookstore;
 USE bookstore;
 
+-- AUTHENTICATION & AUTHORIZATION
+
+CREATE USER 'shadrack'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'felex'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'wilson'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'moraa'@'localhost'
+IDENTIFIED BY '12345678';
+
+
+-- grant permission 
+GRANT ALL ON bookstore.* TO shadrack@localhost, felex@localhost,
+                       wilson@localhost,moraa@localhost;
+                       
+
+--  Roles  
+CREATE ROLE bookstore_devs, bookstore_admin, bookstore_customer;
+
+-- permissions
+
+GRANT ALL ON bookstore.* TO bookstore_devs;
+GRANT SELECT ON bookstore.* TO bookstore_customer;
+GRANT SELECT, DELETE, UPDATE,INSERT ON bookstore.* TO bookstore_admin;
+
+-- DAMMY user
+CREATE USER 'bradon'@'localhost'
+IDENTIFIED BY '12345678';
+
+GRANT bookstore_admin TO bradon@localhost;
+
+SET DEFAULT ROLE bookstore_admin TO bradon@localhost;
+
+
+  
 -- Table 1. author
 
 CREATE TABLE author (
@@ -247,4 +286,28 @@ INSERT INTO customer_address (id, customer_id, address_id, status_id) VALUES
 ('ca_emma_work', 'cust_emma', 'addr_emma_work', 'addrstat_work');
 
 COMMIT;
+
+
+-- AUTH and Roles
+
+-- to all Devs
+CREATE USER 'shadrack'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'felex'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'wilson'@'localhost'
+IDENTIFIED BY '12345678';
+
+CREATE USER 'moraa'@'localhost'
+IDENTIFIED BY '12345678';
+
+
+-- grant permission 
+GRANT ALL ON bookstore.* TO shadrack@localhost, felex@localhost,
+                       wilson@localhost,moraa@localhost;
+
+
+--    Production Roles and GROUPs                   
 

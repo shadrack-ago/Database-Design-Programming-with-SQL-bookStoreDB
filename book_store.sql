@@ -49,7 +49,6 @@ CREATE TABLE author (
     birth_date DATE
 );
 
-
 -- Table 2. book_language
 
 CREATE TABLE book_language (

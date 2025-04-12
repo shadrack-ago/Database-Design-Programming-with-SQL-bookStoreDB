@@ -162,13 +162,6 @@ CREATE INDEX idx_customer_email ON customer(email);
 CREATE INDEX idx_order_date ON cust_order(order_date);
 
 
-
-
--- DO we need this columns in the book table?  To be removed..
-
-ALTER TABLE book ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE book ADD COLUMN updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-
 -- audit/logging columns for tracking changes
 ALTER TABLE author ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE book ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

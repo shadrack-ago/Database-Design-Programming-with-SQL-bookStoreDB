@@ -51,6 +51,7 @@ CREATE TABLE book_author (
 );
 
 
+
 -- table 6. country
 
 CREATE TABLE country (
@@ -114,7 +115,7 @@ CREATE TABLE shipping_method (
 
 CREATE TABLE order_status (
     id VARCHAR(36) PRIMARY KEY,
-    status_name VARCHAR(50) NOT NULL
+    status_name ENUM('New', 'Processing', 'Shipped', 'Delivered')
 );
 
 
@@ -155,6 +156,7 @@ CREATE TABLE order_history (
 );
 
 
+
 -- Added indexes for frequently queried columns
 CREATE INDEX idx_book_title ON book(title);
 CREATE INDEX idx_customer_email ON customer(email);
@@ -167,4 +169,90 @@ CREATE INDEX idx_order_date ON cust_order(order_date);
 
 ALTER TABLE book ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE book ADD COLUMN updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+-- audit/logging columns for tracking changes
+ALTER TABLE author ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE book ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE customer ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+
+
+-- Table Insertions
+-- Parent Tables First (Independent Tables)
+START TRANSACTION;
+
+INSERT INTO book_language (id, language_name) VALUES
+('lang_eng', 'English'),
+('lang_fre', 'French'),
+('lang_spa', 'Spanish');
+
+INSERT INTO publisher (id, name) VALUES
+('pub_penguin', 'Penguin Random House'),
+('pub_harper', 'HarperCollins'),
+('pub_simon', 'Simon & Schuster');
+
+INSERT INTO country (id, country_name) VALUES
+('ctry_us', 'United States'),
+('ctry_uk', 'United Kingdom'),
+('ctry_ca', 'Canada');
+
+INSERT INTO address_status (id, status_name) VALUES
+('addrstat_home', 'Home'),
+('addrstat_work', 'Work'),
+('addrstat_bill', 'Billing');
+
+INSERT INTO shipping_method (id, method_name) VALUES
+('ship_std', 'Standard Shipping'),
+('ship_exp', 'Express Shipping'),
+('ship_int', 'International');
+
+INSERT INTO order_status (id, status_name) VALUES
+('ordstat_new', 'New'),
+('ordstat_proc', 'Processing'),
+('ordstat_ship', 'Shipped'),
+('ordstat_del', 'Delivered');
+
+COMMIT;
+
+START TRANSACTION;
+
+INSERT INTO author (id, name, biography, birth_date) VALUES
+('auth_rowling', 'J.K. Rowling', 'Harry Potter series author', '1965-07-31'),
+('auth_king', 'Stephen King', 'Master of horror fiction', '1947-09-21'),
+('auth_atwood', 'Margaret Atwood', 'Canadian literary icon', '1939-11-18');
+
+INSERT INTO book (id, publisher_id, title, language_id, DateOfPublish_id) VALUES
+('book_hp1', 'pub_penguin', 'Harry Potter and the Philosopher''s Stone', 'lang_eng', '1997-06-26'),
+('book_shining', 'pub_harper', 'The Shining', 'lang_eng', '1977-01-28'),
+('book_handmaid', 'pub_simon', 'The Handmaid''s Tale', 'lang_eng', '1985-08-01');
+
+COMMIT;
+
+
+-- Relationship Tables (Dependent Tables)
+START TRANSACTION;
+
+-- Book-author relationships
+INSERT INTO book_author (id, author_id, book_id) VALUES
+('ba_hp_rowling', 'auth_rowling', 'book_hp1'),
+('ba_sh_king', 'auth_king', 'book_shining'),
+('ba_hm_atwood', 'auth_atwood', 'book_handmaid');
+
+-- Customers with transaction protection
+INSERT INTO customer (id, name, email) VALUES
+('cust_john', 'John Smith', 'john.smith@example.com'),
+('cust_emma', 'Emma Johnson', 'emma.j@example.com');
+
+-- Addresses with country references
+INSERT INTO address (id, street, city, postal_code, country_id) VALUES
+('addr_john_home', '123 Main St', 'New York', '10001', 'ctry_us'),
+('addr_emma_work', '456 Oxford St', 'London', 'W1D 1BS', 'ctry_uk');
+
+-- Customer-address links
+INSERT INTO customer_address (id, customer_id, address_id, status_id) VALUES
+('ca_john_home', 'cust_john', 'addr_john_home', 'addrstat_home'),
+('ca_emma_work', 'cust_emma', 'addr_emma_work', 'addrstat_work');
+
+COMMIT;
 

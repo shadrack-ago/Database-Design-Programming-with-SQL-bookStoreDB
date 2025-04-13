@@ -285,28 +285,3 @@ INSERT INTO customer_address (id, customer_id, address_id, status_id) VALUES
 ('ca_emma_work', 'cust_emma', 'addr_emma_work', 'addrstat_work');
 
 COMMIT;
-
-
--- AUTH and Roles
-
--- to all Devs
-CREATE USER 'shadrack'@'localhost'
-IDENTIFIED BY '12345678';
-
-CREATE USER 'felex'@'localhost'
-IDENTIFIED BY '12345678';
-
-CREATE USER 'wilson'@'localhost'
-IDENTIFIED BY '12345678';
-
-CREATE USER 'moraa'@'localhost'
-IDENTIFIED BY '12345678';
-
-
--- grant permission 
-GRANT ALL ON bookstore.* TO shadrack@localhost, felex@localhost,
-                       wilson@localhost,moraa@localhost;
-
-
---    Production Roles and GROUPs                   
-

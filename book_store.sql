@@ -42,8 +42,8 @@ SET DEFAULT ROLE bookstore_admin TO bradon@localhost;
   
 -- Table 1. author
 
-CREATE TABLE author (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS author (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     biography TEXT,
     birth_date DATE
@@ -51,7 +51,7 @@ CREATE TABLE author (
 
 -- Table 2. book_language
 
-CREATE TABLE book_language (
+CREATE TABLE IF NOT EXISTS book_language (
     id VARCHAR(36) PRIMARY KEY,
     language_name VARCHAR(50) NOT NULL
 );
@@ -59,15 +59,15 @@ CREATE TABLE book_language (
 
 -- table 3. publisher
 
-CREATE TABLE publisher (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS publisher (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL
 );
 
 
 -- table 4. book
 
-CREATE TABLE book (
+CREATE TABLE IF NOT EXISTS book (
     id VARCHAR(36) PRIMARY KEY,
     publisher_id VARCHAR(36),
     title VARCHAR(200) NOT NULL,
@@ -80,8 +80,8 @@ CREATE TABLE book (
 
 -- table 5. book_author
 
-CREATE TABLE book_author (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS book_author (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     author_id VARCHAR(36),
     book_id VARCHAR(36),
     FOREIGN KEY (author_id) REFERENCES author(id),
@@ -92,16 +92,16 @@ CREATE TABLE book_author (
 
 -- table 6. country
 
-CREATE TABLE country (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS country  (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     country_name VARCHAR(100) NOT NULL
 );
 
 
 -- table 7. address
 
-CREATE TABLE address (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS address  (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     street VARCHAR(100),
     city VARCHAR(50),
     postal_code VARCHAR(20),
@@ -113,16 +113,16 @@ CREATE TABLE address (
 
 -- table 8. address_status
 
-CREATE TABLE address_status (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS address_status (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     status_name VARCHAR(50) NOT NULL
 );
 
 
 -- table 9. customer
 
-CREATE TABLE customer (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS customer (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL
 );
@@ -130,8 +130,8 @@ CREATE TABLE customer (
 
 -- table 10. customer_address
 
-CREATE TABLE customer_address (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS customer_address (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     address_id VARCHAR(36),
     status_id VARCHAR(36),
     customer_id VARCHAR(36),
@@ -144,22 +144,22 @@ CREATE TABLE customer_address (
 -- table 11. shipping_method
 
 CREATE TABLE shipping_method (
-    id VARCHAR(36) PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     method_name VARCHAR(50) NOT NULL
 );
 
 -- table 12. order_status
 
 CREATE TABLE order_status (
-    id VARCHAR(36) PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     status_name ENUM('New', 'Processing', 'Shipped', 'Delivered')
 );
 
 
 -- table13. cust_order
 
-CREATE TABLE cust_order (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS cust_order (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     customer_id VARCHAR(36),
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     shipping_method_id VARCHAR(36),
@@ -171,8 +171,8 @@ CREATE TABLE cust_order (
 
 -- Table 14 order_line
 
-CREATE TABLE order_line (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS order_line (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     book_id VARCHAR(36),
     quantity INT NOT NULL CHECK (quantity > 0),
     order_id VARCHAR(36),
@@ -183,8 +183,8 @@ CREATE TABLE order_line (
 -- table 15 order_history
 
 
-CREATE TABLE order_history (
-    id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS order_history (
+    id VARCHAR(36) PRIMARY KEY AUTO_INCREMENT,
     order_id VARCHAR(36),
     change_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status_id VARCHAR(36),
